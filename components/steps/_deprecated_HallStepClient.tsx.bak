@@ -1,0 +1,91 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useBooking } from "@/lib/bookingContext";
+
+type Hall = {
+  id: string;
+  name: string;
+  slug: string;
+  capacity: number;
+  description: string | null;
+};
+
+export default function HallStepClient({ halls }: { halls: Hall[] }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { draft, update, hydrated } = useBooking();
+  const [seeded, setSeeded] = useState(false);
+
+  useEffect(() => {
+    if (!hydrated || seeded) return;
+    const movieTitle = searchParams.get("movieTitle");
+    if (movieTitle) {
+      update({
+        movieTitle,
+        moviePosterUrl: searchParams.get("moviePoster") || null,
+        movieTmdbId: Number(searchParams.get("movieTmdbId")) || null,
+        movieSkipped: false
+      });
+    }
+    setSeeded(true);
+  }, [hydrated, seeded, searchParams, update]);
+
+  function choose(hall: Hall) {
+    update({
+      hallId: hall.id,
+      hallName: hall.name,
+      hallSlug: hall.slug,
+      hallCapacity: hall.capacity,
+      // Cap the currently chosen guest count if it now exceeds this hall
+      guestCount: Math.min(draft.guestCount, hall.capacity)
+    });
+    router.push("/book/datetime");
+  }
+
+  return (
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-gold">Step 2</p>
+      <h1 className="mt-sm font-display text-[32px] tracking-[0.10em] text-white">
+        Choose Your Hall
+      </h1>
+      <p className="mt-sm font-body text-[13px] font-light text-muted">
+        Each hall is private, just your group and the screen.
+      </p>
+
+      <div className="mt-xl grid gap-lg sm:grid-cols-2">
+        {halls.map((hall) => {
+          const selected = draft.hallId === hall.id;
+          return (
+            <button
+              key={hall.id}
+              onClick={() => choose(hall)}
+              className={`rounded border p-lg text-left transition ${
+                selected ? "border-gold bg-gold-dim" : "border-border bg-surface hover:border-gold/40"
+              }`}
+            >
+              <h3 className="card-title font-body text-[16px] font-medium uppercase text-white">
+                {hall.name}
+              </h3>
+              <p className="mt-xs font-mono text-[9px] uppercase tracking-[0.10em] text-muted">
+                Up to {hall.capacity} guests
+              </p>
+              {hall.description && (
+                <p className="mt-md font-body text-[13px] font-light text-muted">
+                  {hall.description}
+                </p>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {halls.length === 0 && (
+        <p className="mt-lg font-body text-[13px] text-muted">
+          No halls are set up yet.
+        </p>
+      )}
+    </div>
+  );
+}

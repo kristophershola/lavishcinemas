@@ -1,0 +1,121 @@
+// Lavish Cinemas booking database schema
+// Business rules encoded here:
+// - Halls hold 1 to 6 guests
+// - Every session is fixed at 2 hours 20 minutes, computed from startTime
+// - Film is picked on arrival, so no film field on Booking
+// - No cancellations or refunds, only reschedules (tracked via self relation)
+// - Reschedule fee is fixed (see lib/pricing.ts), new date must be within 14 days of original
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  RESCHEDULED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  REFUND_INELIGIBLE
+}
+
+model Hall {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  capacity    Int       @default(6)
+  description String?
+  images      String[]
+  isActive    Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Singleton row (fixed id "singleton") holding site-wide admin choices
+// that don't belong on any other model, starting with which movie from
+// the external feed is featured on the home page.
+model SiteSettings {
+  id                  String   @id @default("singleton")
+  featuredMovieTmdbId Int?
+  updatedAt           DateTime @updatedAt
+}
+
+// Pricing tiers, shared across every hall (both halls currently offer the
+// same six packages). If a hall ever needs its own pricing, add a hallId
+// here and scope queries by it, everything else already reads price off
+// the Package relation rather than assuming a single hall-wide price.
+model Package {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  price       Int // in kobo
+  description String?
+  imageUrl    String? // placeholder for now, swap for real package photography later
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  reference     String   @unique // Paystack transaction reference
+
+  hall          Hall     @relation(fields: [hallId], references: [id])
+  hallId        String
+
+  package       Package  @relation(fields: [packageId], references: [id])
+  packageId     String
+
+  date          DateTime // calendar date of the session (time part ignored)
+  startTime     String   // "14:00" 24hr format, doors open at this time
+  endTime       String   // startTime + 2h20m, stored for fast lookup / conflict checks
+
+  guestCount    Int
+  customerName  String
+  customerEmail String
+  customerPhone String
+
+  // Movie is optional, chosen during booking or skipped and picked on
+  // arrival. Not a foreign key since movies live in an external JSON feed,
+  // not this database, so we snapshot the details at booking time.
+  movieTitle     String?
+  moviePosterUrl String?
+  movieTmdbId    Int?
+
+  specialEventUpgrade Boolean @default(false) // +N35,000, hall decoration + personal screening
+  amount              Int     // total charged, in kobo
+
+  status        BookingStatus  @default(PENDING)
+  paymentStatus PaymentStatus  @default(UNPAID)
+
+  rescheduleCount   Int      @default(0)
+  rescheduledFromId String?
+  rescheduledFrom   Booking? @relation("Reschedule", fields: [rescheduledFromId], references: [id])
+  rescheduledTo     Booking[] @relation("Reschedule")
+
+  // Set while a reschedule fee payment is in progress. Cleared (date/time
+  // only) once the new Booking is created; the reference is kept as a
+  // record of which payment triggered the reschedule.
+  pendingRescheduleDate      DateTime?
+  pendingRescheduleStartTime String?
+  pendingRescheduleReference String?  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hallId, date])
+}

@@ -1,0 +1,86 @@
+.lavish-dashboard {
+  --dashboard-scheduled: oklch(0.62325 0.14864 251.5);
+  --dashboard-completed: oklch(0.62265 0.12424 165.02);
+  --dashboard-no-show: oklch(0.76366 0.15429 69.59);
+  --dashboard-secondary: oklch(0.59276 0.14905 282.66);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.18 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+}
+
+.lavish-dashboard.light,
+.light .lavish-dashboard {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(0.98 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --sidebar: oklch(0.975 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --dashboard-scheduled: oklch(0.55 0.15 251.5);
+  --dashboard-completed: oklch(0.55 0.12 165.02);
+  --dashboard-no-show: oklch(0.65 0.15 69.59);
+  --dashboard-secondary: oklch(0.52 0.15 282.66);
+}
+
+.lavish-dashboard.no-scrollbar,
+.lavish-dashboard.no-scrollbar * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.lavish-dashboard.no-scrollbar::-webkit-scrollbar,
+.lavish-dashboard.no-scrollbar *::-webkit-scrollbar {
+  display: none;
+}
+
+.lavish-dashboard .dashboard-load-segment {
+  width: var(--department-width);
+  animation: dashboard-load-grow 700ms ease-out both;
+}
+
+.lavish-dashboard .dashboard-resource-progress {
+  transform-origin: left;
+  animation: dashboard-resource-grow 700ms ease-out both;
+}
+
+@keyframes dashboard-load-grow {
+  from { width: 0; }
+  to { width: var(--department-width); }
+}
+
+@keyframes dashboard-resource-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}

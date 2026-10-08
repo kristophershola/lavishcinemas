@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white font-body;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    @apply font-display uppercase tracking-wide;
+  }
+
+  ::selection {
+    background: rgba(201, 168, 76, 0.3);
+    color: #f5f0e8;
+  }
+}
+
+@layer utilities {
+  .card-title {
+    letter-spacing: 0.01em;
+  }
+
+  .meta-mono {
+    letter-spacing: 0.15em;
+  }
+}
+
+/* Skeleton pulse, per brand motion spec */
+@keyframes lavishPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.lavish-skeleton {
+  animation: lavishPulse 1.6s ease-in-out infinite;
+}
+
+/* Card entrance, per brand motion spec */
+@keyframes lavishFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lavish-fade-up {
+  animation: lavishFadeUp 0.4s ease both;
+}
+
+/* Nav entrance, syncs with the hero's fade-up on page load */
+@keyframes lavishSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lavish-slide-down {
+  animation: lavishSlideDown 0.4s ease both;
+}
+
+/* Continuous auto-scrolling movie strip, pauses on hover */
+@keyframes lavishMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.lavish-marquee-track {
+  animation: lavishMarquee 45s linear infinite;
+  width: max-content;
+}
+
+.lavish-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

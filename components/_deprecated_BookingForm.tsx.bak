@@ -1,0 +1,326 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import {
+  MIN_GUESTS,
+  MAX_GUESTS,
+  SPECIAL_EVENT_UPGRADE_FEE,
+  formatNaira
+} from "@/lib/policy";
+
+type Hall = {
+  id: string;
+  name: string;
+  slug: string;
+  capacity: number;
+  description: string | null;
+};
+
+type Package = {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+};
+
+type Slot = { startTime: string; endTime: string; available: boolean };
+
+export default function BookingForm({
+  halls,
+  packages,
+  preselectedSlug
+}: {
+  halls: Hall[];
+  packages: Package[];
+  preselectedSlug?: string;
+}) {
+  const initialHall =
+    halls.find((h) => h.slug === preselectedSlug) ?? halls[0] ?? null;
+
+  const [hallId, setHallId] = useState(initialHall?.id ?? "");
+  const [packageId, setPackageId] = useState("");
+  const [date, setDate] = useState("");
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [guestCount, setGuestCount] = useState(2);
+  const [specialEventUpgrade, setSpecialEventUpgrade] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const selectedHall = halls.find((h) => h.id === hallId) ?? null;
+  const selectedPackage = packages.find((p) => p.id === packageId) ?? null;
+
+  const totalAmount = useMemo(() => {
+    if (!selectedPackage) return 0;
+    return selectedPackage.price + (specialEventUpgrade ? SPECIAL_EVENT_UPGRADE_FEE : 0);
+  }, [selectedPackage, specialEventUpgrade]);
+
+  useEffect(() => {
+    if (!hallId || !date) {
+      setSlots([]);
+      return;
+    }
+    setLoadingSlots(true);
+    setStartTime("");
+    fetch(`/api/sessions?hallId=${hallId}&date=${date}`)
+      .then((res) => res.json())
+      .then((json) => setSlots(json.slots ?? []))
+      .catch(() => setError("Could not load available times. Please retry."))
+      .finally(() => setLoadingSlots(false));
+  }, [hallId, date]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+
+    if (!hallId || !date || !startTime || !packageId) {
+      setError("Please choose a hall, package, date, and time.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          hallId,
+          packageId,
+          date,
+          startTime,
+          guestCount,
+          customerName,
+          customerEmail,
+          customerPhone,
+          specialEventUpgrade
+        })
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setError(json.error ?? "Something went wrong. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      window.location.href = json.authorizationUrl;
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+      setSubmitting(false);
+    }
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-xl space-y-xl">
+      <div>
+        <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+          Hall
+        </label>
+        <div className="grid gap-md sm:grid-cols-2">
+          {halls.map((hall) => (
+            <button
+              type="button"
+              key={hall.id}
+              onClick={() => setHallId(hall.id)}
+              className={`rounded border p-md text-left transition ${
+                hallId === hall.id
+                  ? "border-gold bg-gold-dim"
+                  : "border-border bg-surface hover:border-gold/40"
+              }`}
+            >
+              <p className="card-title font-body text-[13px] font-medium uppercase text-white">
+                {hall.name}
+              </p>
+              <p className="mt-xs font-mono text-[9px] uppercase tracking-[0.10em] text-muted">
+                Up to {hall.capacity} guests
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+          Package
+        </label>
+        <div className="grid gap-md sm:grid-cols-2">
+          {packages.map((pkg) => (
+            <button
+              type="button"
+              key={pkg.id}
+              onClick={() => setPackageId(pkg.id)}
+              className={`rounded border p-md text-left transition ${
+                packageId === pkg.id
+                  ? "border-gold bg-gold-dim"
+                  : "border-border bg-surface hover:border-gold/40"
+              }`}
+            >
+              <p className="card-title font-body text-[13px] font-medium uppercase text-white">
+                {pkg.name}
+              </p>
+              <p className="mt-xs font-mono text-[9px] uppercase tracking-[0.10em] text-muted">
+                {formatNaira(pkg.price)}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-lg sm:grid-cols-2">
+        <div>
+          <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+            Date
+          </label>
+          <input
+            type="date"
+            min={today}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full rounded border border-border bg-surface px-md py-sm font-body text-[13px] text-white outline-none focus:border-gold"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+            Guests ({MIN_GUESTS} to {MAX_GUESTS})
+          </label>
+          <input
+            type="number"
+            min={MIN_GUESTS}
+            max={selectedHall?.capacity ?? MAX_GUESTS}
+            value={guestCount}
+            onChange={(e) => setGuestCount(Number(e.target.value))}
+            className="w-full rounded border border-border bg-surface px-md py-sm font-body text-[13px] text-white outline-none focus:border-gold"
+            required
+          />
+        </div>
+      </div>
+
+      {date && (
+        <div>
+          <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+            Available Times
+          </label>
+          {loadingSlots && (
+            <p className="font-body text-[13px] text-muted">Loading times...</p>
+          )}
+          {!loadingSlots && slots.length > 0 && (
+            <div className="flex flex-wrap gap-sm">
+              {slots.map((slot) => (
+                <button
+                  type="button"
+                  key={slot.startTime}
+                  disabled={!slot.available}
+                  onClick={() => setStartTime(slot.startTime)}
+                  className={`rounded-pill border px-lg py-sm font-mono text-[10px] uppercase tracking-[0.15em] transition ${
+                    !slot.available
+                      ? "cursor-not-allowed border-border text-muted/40 line-through"
+                      : startTime === slot.startTime
+                      ? "border-gold bg-gold-dim text-gold"
+                      : "border-border text-muted hover:border-gold/40 hover:text-gold"
+                  }`}
+                >
+                  {slot.startTime}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <label className="flex items-start gap-sm rounded border border-border bg-surface p-md">
+        <input
+          type="checkbox"
+          checked={specialEventUpgrade}
+          onChange={(e) => setSpecialEventUpgrade(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          <span className="block font-body text-[13px] text-white">
+            Special Event Upgrade (+{formatNaira(SPECIAL_EVENT_UPGRADE_FEE)})
+          </span>
+          <span className="block font-body text-[12px] font-light text-muted">
+            Hall decoration and your own film or video screening.
+          </span>
+        </span>
+      </label>
+
+      <div className="grid gap-lg sm:grid-cols-2">
+        <div>
+          <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+            Full Name
+          </label>
+          <input
+            type="text"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            className="w-full rounded border border-border bg-surface px-md py-sm font-body text-[13px] text-white outline-none focus:border-gold"
+            required
+          />
+        </div>
+        <div>
+          <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+            Phone
+          </label>
+          <input
+            type="tel"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            className="w-full rounded border border-border bg-surface px-md py-sm font-body text-[13px] text-white outline-none focus:border-gold"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-sm block font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+          Email
+        </label>
+        <input
+          type="email"
+          value={customerEmail}
+          onChange={(e) => setCustomerEmail(e.target.value)}
+          className="w-full rounded border border-border bg-surface px-md py-sm font-body text-[13px] text-white outline-none focus:border-gold"
+          required
+        />
+      </div>
+
+      <div className="rounded border border-border bg-surface p-lg">
+        <p className="font-mono text-[9px] uppercase tracking-[0.10em] text-muted">
+          No cancellations. No refunds. Doors open at your ticketed time, no
+          extensions for late arrivals.
+        </p>
+      </div>
+
+      {error && (
+        <p className="font-body text-[13px] text-red-400">{error}</p>
+      )}
+
+      <div className="flex items-center justify-between border-t border-border pt-lg">
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[0.10em] text-muted">
+            Total
+          </p>
+          <p className="font-display text-[24px] text-gold">
+            {formatNaira(totalAmount)}
+          </p>
+        </div>
+        <button
+          type="submit"
+          disabled={submitting || !startTime || !packageId}
+          className="rounded bg-gold px-xl py-md font-mono text-[11px] uppercase tracking-[0.15em] text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {submitting ? "Redirecting..." : "Proceed to payment"}
+        </button>
+      </div>
+    </form>
+  );
+}
