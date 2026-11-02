@@ -1,282 +1,210 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 const YEAR = new Date().getFullYear();
 
-const footerColumns = [
-  {
-    title: "APARTMENTS",
-    links: [
-      { label: "Book a Stay", href: "/book" },
-      { label: "How It Works", href: "/#how-it-works" },
-      { label: "Pricing", href: "/#pricing" },
-      { label: "Gallery", href: "/#gallery" },
-    ],
-  },
-  {
-    title: "CINEMA",
-    links: [
-      { label: "Now Showing", href: "/now-showing" },
-      { label: "Book a Hall", href: "/book" },
-      { label: "Session Times", href: "/#how-it-works" },
-      { label: "Private Events", href: "/book" },
-    ],
-  },
-  {
-    title: "COMPANY",
-    links: [
-      { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/#contact" },
-      { label: "FAQ", href: "/#faq" },
-      { label: "How It Works", href: "/#how-it-works" },
-    ],
-  },
-  {
-    title: "LEGAL",
-    links: [
-      { label: "Terms and Conditions", href: "/terms" },
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Refund Policy", href: "/refund-policy" },
-    ],
-  },
-];
-
 const socialLinks = [
   {
-    label: "Instagram",
-    href: "#",
+    name: "Facebook",
+    href: "https://facebook.com",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5" />
-        <circle cx="12" cy="12" r="5" />
-        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        className="shrink-0"
+      >
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
       </svg>
     ),
   },
   {
-    label: "Twitter",
-    href: "#",
+    name: "X (Twitter)",
+    href: "https://twitter.com",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 4l6.5 8L4 20h2l5.5-6.5L16 20h4l-6.5-8L20 4h-2l-5.5 6.5L8 4H4z" />
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        className="shrink-0"
+      >
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
     ),
   },
   {
-    label: "Facebook",
-    href: "#",
+    name: "Instagram",
+    href: "https://instagram.com",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        className="shrink-0"
+      >
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
       </svg>
     ),
   },
   {
-    label: "LinkedIn",
-    href: "#",
+    name: "Tiktok",
+    href: "https://tiktok.com",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-        <rect x="2" y="9" width="4" height="12" />
-        <circle cx="4" cy="4" r="2" />
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        className="shrink-0"
+      >
+        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.97-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
       </svg>
     ),
   },
 ];
 
 export default function SiteFooter() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    setSubscribed(true);
+    setTimeout(() => {
+      setEmail("");
+      setSubscribed(false);
+    }, 4000);
+  }
+
   return (
-    <footer className="relative w-full overflow-hidden border-t border-border bg-[#161616] font-body antialiased selection:bg-gold/30 selection:text-white">
-      {/* Hero image with gradient overlay */}
-      <div className="relative w-full">
-        <img
-          src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1600&q=80"
-          alt="Lavish cinema hall interior"
-          className="h-[300px] w-full object-cover object-center outline outline-1 -outline-offset-1 outline-white/10 sm:h-[360px] md:h-[420px] lg:h-[500px]"
-        />
-
-        {/* Gradient: transparent to solid dark */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent 40%, rgba(22,22,22,0.6) 70%, #161616 100%)",
-          }}
-        />
-
-        {/* Overlay text on the image */}
-        <div className="absolute inset-0 flex flex-col justify-center px-page">
-          <h2 className="font-display max-w-xs text-3xl leading-[1.15] tracking-wide text-white sm:max-w-sm sm:text-4xl md:max-w-md md:text-5xl">
-            LAVISH LIVING
-            <br />
-            REDEFINED.
-          </h2>
-          <p className="mt-3 max-w-[270px] text-[13px] leading-relaxed text-muted">
-            Premium short-term apartments and private cinema halls in
-            Gwarimpa, Abuja.
-          </p>
-          <div className="mt-5">
-            <Button asChild size="lg">
-              <Link href="/book">
-                Book Now
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Footer Content */}
-      <div className="mx-auto w-full max-w-6xl px-page pt-2xl pb-0">
-        <div className="grid grid-cols-1 gap-xl sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          {/* Brand block - 3 cols */}
-          <div className="flex flex-col gap-5 sm:col-span-2 lg:col-span-3">
-            <Link href="/" className="font-display text-2xl tracking-[0.12em] text-white">
-              LAVISH
+    <footer className="footer w-full border-t border-border bg-[#161616] font-body text-white antialiased">
+      <div className="footer-inner mx-auto flex min-h-[440px] w-full max-w-[1700px] flex-col justify-between gap-[60px] px-6 py-10 md:px-10 lg:px-[72px]">
+        {/* Top Section */}
+        <div className="footer-inner_top flex w-full flex-wrap justify-between gap-[55px]">
+          {/* Left Column: Logo + Newsletter */}
+          <div className="footer-inner_top-left flex w-full max-w-[434px] flex-col">
+            <Link
+              href="/"
+              className="footer-logo mb-8 inline-block font-display text-[22px] font-black tracking-[-0.02em] text-white transition hover:text-gold sm:text-[26px]"
+            >
+              LAVISH CINEMAS
             </Link>
-            <p className="max-w-[210px] text-[13px] leading-relaxed text-muted">
-              Premium short-term apartments and private cinema halls in
-              Gwarimpa, Abuja, Nigeria.
-            </p>
-            <Button asChild variant="outline" size="sm" className="w-fit">
-              <Link href="/book">
-                Book a Hall
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+
+            <div>
+              <p className="mb-6 font-body text-[16px] font-normal leading-[24px] text-muted">
+                Sign up to our newsletter to receive information about upcoming
+                events.
+              </p>
+
+              <form onSubmit={handleSubmit} className="footer-newsletter flex w-full flex-col gap-[10px] sm:flex-row">
+                <input
+                  id="newsletter"
+                  name="email"
+                  placeholder="Your Email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-[8px] border border-border bg-black/30 p-4 font-body text-[16px] text-white placeholder:text-muted outline-none transition focus:border-gold sm:w-[315px]"
+                />
+                <button
+                  type="submit"
+                  className="button inline-flex shrink-0 cursor-pointer items-center justify-center rounded-[8px] bg-gold px-6 py-4 font-body text-[16px] font-semibold text-black transition-all hover:bg-white active:translate-y-px"
                 >
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </Link>
-            </Button>
+                  {subscribed ? "Subscribed!" : "Subscribe"}
+                </button>
+              </form>
+            </div>
           </div>
 
-          {/* Navigation columns - 6 cols */}
-          <nav
-            aria-label="Footer navigation"
-            className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 lg:col-span-6 lg:ml-8"
-          >
-            {footerColumns.map((col) => (
-              <div key={col.title} className="flex flex-col gap-4">
-                <h3 className="font-mono text-[10px] font-semibold tracking-[0.15em] text-gold uppercase">
-                  {col.title}
-                </h3>
-                <ul className="flex flex-col gap-[10px]">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="inline-block text-[13px] leading-snug text-muted transition-colors duration-150 hover:text-white focus-visible:text-white focus-visible:outline-none"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
+          {/* Right Column: Links */}
+          <div className="footer-inner_top-right flex w-full flex-wrap justify-between gap-10 border-b border-border pb-12 sm:w-auto sm:gap-[120px] sm:border-b-0 sm:pb-0">
+            <div className="footer-links flex w-[45%] flex-col gap-4 sm:w-auto sm:gap-6">
+              <p className="mb-2 font-body text-[16px] font-bold leading-[24px] text-gold">
+                Company
+              </p>
+              <Link
+                href="/"
+                className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+              >
+                Homepage
+              </Link>
+              <Link
+                href="/about"
+                className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/#how-it-works"
+                className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/now-showing"
+                className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+              >
+                Now Showing
+              </Link>
+            </div>
 
-          {/* Social column - 3 cols */}
-          <div className="flex flex-col gap-4 lg:col-span-3">
-            <h3 className="text-xl font-display tracking-wide text-white">
-              STAY CONNECTED
-            </h3>
-            <p className="max-w-[220px] text-[13px] leading-relaxed text-muted">
-              Follow us for updates, events and a dose of inspiration.
-            </p>
-            <div className="flex items-center gap-2">
-              {socialLinks.map(({ icon, label, href }) => (
+            <div className="footer-links flex w-[45%] flex-col gap-4 sm:w-auto sm:gap-6">
+              <p className="mb-2 font-body text-[16px] font-bold leading-[24px] text-gold">
+                Follow Us
+              </p>
+              {socialLinks.map(({ name, href, icon }) => (
                 <a
-                  key={label}
+                  key={name}
                   href={href}
-                  aria-label={label}
-                  className="flex size-10 items-center justify-center rounded-full bg-white/5 text-muted shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[background-color,color,box-shadow] duration-150 hover:bg-white/10 hover:text-white hover:shadow-[0_0_0_1px_rgba(255,255,255,0.15)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-social_link group flex items-center gap-4 font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
                 >
-                  {icon}
+                  <span className="shrink-0 text-white/85 transition-colors duration-300 group-hover:text-gold">
+                    {icon}
+                  </span>
+                  <span>{name}</span>
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-2xl flex flex-col items-start justify-between gap-4 border-t border-border pt-lg pb-xl text-[13px] text-muted sm:flex-row sm:items-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.10em]">
+        {/* Bottom Section */}
+        <div className="footer-inner_bottom flex flex-wrap-reverse items-center justify-between gap-10">
+          <div className="footer-copyright font-body text-[14px] font-normal leading-[20px] text-muted sm:text-[16px] sm:leading-[24px]">
             Copyright &copy; {YEAR}. Lavish Living Limited. All rights reserved.
-          </p>
-          <div className="flex flex-wrap items-center gap-5 font-mono text-[10px] uppercase tracking-[0.10em]">
-            {["Privacy Policy", "Terms of Service", "Refund Policy"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="transition-colors duration-150 hover:text-white focus-visible:text-white focus-visible:outline-none"
-                >
-                  {item}
-                </a>
-              ),
-            )}
           </div>
-        </div>
-      </div>
-
-      {/* Massive Wordmark */}
-      <div className="relative w-full overflow-hidden" aria-hidden="true">
-        <div className="flex w-full items-end select-none">
-          <div className="flex-1 overflow-hidden">
-            <svg
-              className="h-auto w-full"
-              viewBox="0 0 870 170"
-              preserveAspectRatio="xMidYMid meet"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="footer-links bottom flex w-full min-w-0 flex-col gap-8 sm:w-auto sm:min-w-[540px] sm:flex-row sm:gap-[65px]">
+            <Link
+              href="/terms"
+              className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
             >
-              <defs>
-                <linearGradient
-                  id="wm-gradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                  gradientUnits="objectBoundingBox"
-                >
-                  <stop offset="0%" stopColor="#6b6b6b" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#191919" stopOpacity="0.7" />
-                </linearGradient>
-              </defs>
-              <text
-                x="50%"
-                y="90%"
-                dominantBaseline="auto"
-                textAnchor="middle"
-                textLength="870"
-                lengthAdjust="spacingAndGlyphs"
-                fontSize="175"
-                fontWeight="700"
-                fontFamily="Avenir, 'Avenir Next', var(--font-inter), sans-serif"
-                letterSpacing="-0.025em"
-                fill="url(#wm-gradient)"
-              >
-                LAVISH
-              </text>
-            </svg>
+              Terms &amp; Conditions
+            </Link>
+            <Link
+              href="/privacy"
+              className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/refund-policy"
+              className="font-body text-[16px] font-normal leading-[24px] text-white/85 transition-colors duration-300 hover:text-gold"
+            >
+              Refund Policy
+            </Link>
           </div>
         </div>
       </div>
