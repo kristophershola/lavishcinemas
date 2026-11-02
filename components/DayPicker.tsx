@@ -34,7 +34,7 @@ export default function DayPicker({
           <button
             key={iso}
             onClick={() => onSelect(iso)}
-            className={`day-card flex shrink-0 flex-col items-center justify-center rounded-[5px] border transition-all duration-300 ${
+            className={`day-card flex shrink-0 flex-col items-center justify-center rounded-[8px] border transition-all duration-300 ${
               isSelected
                 ? "border-gold bg-gold-dim"
                 : "border-surface bg-surface hover:border-gold/40"

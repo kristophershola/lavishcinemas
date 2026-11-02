@@ -36,7 +36,7 @@ export default function HowItWorks() {
 
       <div className="mt-xl grid gap-xl sm:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((step) => (
-          <div key={step.number} className="rounded border border-border bg-surface p-lg">
+          <div key={step.number} className="rounded-[16px] border border-border bg-surface p-lg">
             <span className="font-display text-[28px] sm:text-[32px] font-bold text-gold/60">{step.number}</span>
             <h3 className="mt-md font-display text-[18px] sm:text-[20px] font-semibold text-white tracking-normal">
               {step.title}

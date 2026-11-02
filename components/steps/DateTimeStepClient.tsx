@@ -86,7 +86,7 @@ export default function DateTimeStepClient({ halls }: { halls: Hall[] }) {
               <button
                 key={hall.id}
                 onClick={() => pickHall(hall)}
-                className={`rounded border-2 p-xl text-left transition ${
+                className={`rounded-[8px] border-2 p-xl text-left transition ${
                   selected ? "border-gold bg-gold-dim" : "border-border bg-black/20 hover:border-gold/40"
                 }`}
               >
@@ -131,7 +131,7 @@ export default function DateTimeStepClient({ halls }: { halls: Hall[] }) {
                   key={slot.startTime}
                   disabled={!slot.available}
                   onClick={() => pickTime(slot)}
-                  className={`rounded-pill border-2 px-xl py-md font-mono text-[13px] font-medium uppercase tracking-[0.15em] transition ${
+                  className={`rounded-[8px] border-2 px-xl py-md font-mono text-[13px] font-medium uppercase tracking-[0.15em] transition ${
                     !slot.available
                       ? "cursor-not-allowed border-border text-muted/40 line-through"
                       : draft.startTime === slot.startTime

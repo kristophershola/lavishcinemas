@@ -71,14 +71,14 @@ export default function FeaturedFilmSection({
         </Button>
       </div>
 
-      <div className="rounded border border-border bg-surface p-xl sm:p-2xl">
+      <div className="rounded-[16px] sm:rounded-[24px] border border-border bg-surface p-xl sm:p-2xl">
         <p className="mb-sm font-body text-[14px] font-medium text-muted">
           Pick A Date
         </p>
         <DayPicker selectedDate={selectedDate} onSelect={setSelectedDate} />
 
         <div className="mt-xl grid gap-2xl sm:grid-cols-[280px_1fr]">
-          <div className="aspect-[2/3] w-full max-w-[280px] overflow-hidden rounded bg-deep">
+          <div className="aspect-[2/3] w-full max-w-[280px] overflow-hidden rounded-[12px] sm:rounded-[16px] bg-deep">
             {movie.poster && (
               <img src={movie.poster} alt={movie.title} className="h-full w-full object-cover" />
             )}

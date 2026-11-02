@@ -84,9 +84,20 @@ const config: Config = {
         "fluid-body": ["clamp(14px, 1vw, 20px)", { lineHeight: "1.5" }]
       },
       borderRadius: {
-        DEFAULT: "6px",
-        pill: "100px",
-        micro: "3px"
+        DEFAULT: "8px",
+        none: "0px",
+        sm: "4px",
+        md: "6px",
+        lg: "8px",
+        xl: "12px",
+        "2xl": "16px",
+        "3xl": "24px",
+        pill: "24px",
+        full: "9999px",
+        btn: "8px",
+        card: "8px",
+        box: "16px",
+        section: "24px"
       },
       spacing: {
         xs: "4px",

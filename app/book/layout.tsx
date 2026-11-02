@@ -7,7 +7,7 @@ export default function BookLayout({ children }: { children: React.ReactNode }) 
       <main className="min-h-screen w-full bg-black text-white">
         <BookingStepNav />
         <div className="mx-auto max-w-7xl px-page py-hero">
-          <div className="rounded border border-border bg-surface p-xl sm:p-2xl">
+          <div className="rounded-[16px] sm:rounded-[24px] border border-border bg-surface p-xl sm:p-2xl">
             {children}
           </div>
         </div>

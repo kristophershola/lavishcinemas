@@ -42,7 +42,7 @@ export default function BookingStepNav() {
             <Link
               key={step.href}
               href={step.href}
-              className={`flex shrink-0 items-center gap-sm rounded-pill border-2 px-lg py-md font-mono text-[12px] font-medium uppercase tracking-[0.12em] transition ${
+              className={`flex shrink-0 items-center gap-sm rounded-[8px] border-2 px-lg py-md font-mono text-[12px] font-medium uppercase tracking-[0.12em] transition ${
                 active
                   ? "border-gold bg-gold text-black"
                   : done
