@@ -8,7 +8,7 @@ import FeaturedFilmSection from "@/components/FeaturedFilmSection";
 import MovieCarousel from "@/components/MovieCarousel";
 import HowItWorks from "@/components/HowItWorks";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [halls, movies, featuredTmdbId] = await Promise.all([
