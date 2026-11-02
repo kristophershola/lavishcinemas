@@ -2,14 +2,19 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 
+function toLocalIso(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 function buildDays(count = 30, minDate?: string) {
   const days: Date[] = [];
-  const base = minDate ? new Date(minDate + "T00:00:00") : new Date();
-  base.setHours(0, 0, 0, 0);
+  const base = minDate ? new Date(minDate + "T12:00:00") : new Date();
 
   for (let i = 0; i < count; i++) {
-    const d = new Date(base);
-    d.setDate(d.getDate() + i);
+    const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i, 12, 0, 0);
     days.push(d);
   }
   return days;
@@ -107,7 +112,7 @@ export default function DayPicker({
           className="no-scrollbar flex flex-1 items-center gap-4 overflow-x-auto py-2 scroll-smooth"
         >
           {days.map((date) => {
-            const iso = date.toISOString().split("T")[0];
+            const iso = toLocalIso(date);
             const isSelected = selectedDate === iso;
             const weekday = date.toLocaleDateString("en-NG", { weekday: "short" });
             const dayNum = String(date.getDate()).padStart(2, "0");
