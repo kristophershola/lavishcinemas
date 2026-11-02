@@ -23,16 +23,16 @@ export default function HeroCarousel() {
       {/* Main content */}
       <div className="lavish-fade-up container relative z-10 mt-hero flex flex-1 flex-col items-center justify-center px-page pb-hero text-center">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center">
-          <h1 className="mb-lg flex w-full flex-col items-center text-white">
-            <span className="text-center text-[44px] leading-[1.1] tracking-[0.04em] sm:text-[64px] md:text-[76px] lg:text-[88px]">
+          <h1 className="mb-lg flex w-full flex-col items-center font-display font-[900] tracking-[-0.02em] text-white">
+            <span className="text-center text-[30px] leading-[38px] sm:text-[38px] sm:leading-[45px] lg:text-[60px] lg:leading-[72px]">
               Your Own Private
             </span>
-            <span className="mt-xs text-center text-[44px] leading-[1.1] tracking-[0.04em] text-gold sm:text-[64px] md:text-[76px] lg:text-[88px]">
+            <span className="mt-xs text-center text-[30px] leading-[38px] text-gold sm:text-[38px] sm:leading-[45px] lg:text-[60px] lg:leading-[72px]">
               Cinema Experience
             </span>
           </h1>
 
-          <p className="mx-auto mb-xl max-w-[560px] font-body text-[15px] leading-relaxed text-muted sm:text-[17px]">
+          <p className="mx-auto mb-xl max-w-[560px] font-body text-[16px] leading-[22px] text-muted sm:text-[18px] sm:leading-[24px] lg:text-[20px] lg:leading-[30px]">
             Two private halls, six curated packages, and a screen all to yourselves.
             Book your hall and choose your film on arrival.
           </p>

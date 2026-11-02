@@ -63,7 +63,7 @@ export default function FeaturedFilmSection({
   return (
     <section className="mx-auto max-w-7xl px-page pb-lg">
       <div className="mb-lg flex items-center justify-between">
-        <h2 className="font-display text-[56px] tracking-[0.06em] text-white underline decoration-gold decoration-[3px] underline-offset-[12px]">
+        <h2 className="font-display text-[24px] leading-[32px] sm:text-[32px] sm:leading-[40px] lg:text-[48px] lg:leading-[62px] font-bold tracking-[-0.01em] text-white underline decoration-gold decoration-[3px] underline-offset-[12px]">
           Now Showing
         </h2>
         <Button asChild variant="outline" className="shrink-0">
@@ -72,7 +72,7 @@ export default function FeaturedFilmSection({
       </div>
 
       <div className="rounded border border-border bg-surface p-xl sm:p-2xl">
-        <p className="mb-sm font-mono text-[12px] uppercase tracking-[0.15em] text-muted">
+        <p className="mb-sm font-body text-[14px] font-medium text-muted">
           Pick A Date
         </p>
         <DayPicker selectedDate={selectedDate} onSelect={setSelectedDate} />
@@ -85,15 +85,15 @@ export default function FeaturedFilmSection({
           </div>
 
           <div>
-            <h3 className="font-display text-[44px] leading-[1] tracking-[0.06em] text-white">
+            <h3 className="font-display text-[20px] leading-[28px] sm:text-[24px] sm:leading-[32px] lg:text-[30px] lg:leading-[38px] font-bold text-white">
               {movie.title}
             </h3>
-            <p className="mt-sm font-mono text-[12px] uppercase tracking-[0.15em] text-muted">
+            <p className="mt-sm font-body text-[14px] text-muted">
               {movie.year}
               {movie.genres ? ` · ${movie.genres.split(",").slice(0, 2).join(", ")}` : ""}
             </p>
             {movie.overview && (
-              <p className="mt-md max-w-2xl font-body text-[15px] font-light leading-relaxed text-muted">
+              <p className="mt-md max-w-2xl font-body text-[16px] leading-[24px] text-muted">
                 {movie.overview}
               </p>
             )}
@@ -105,7 +105,7 @@ export default function FeaturedFilmSection({
             >
               {halls.map((hall) => (
                 <div key={hall.id}>
-                  <p className="mb-sm font-mono text-[12px] uppercase tracking-[0.15em] text-white">
+                  <p className="mb-sm font-body text-[14px] font-semibold text-white">
                     {hall.name}
                   </p>
                   <div className="flex flex-wrap gap-sm">

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 // semantic names, since this project has no primary/secondary/background
 // theme layer, just the fixed palette from the brand style guide.
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center cursor-pointer rounded-pill border border-transparent bg-clip-padding font-mono text-[11px] uppercase tracking-[0.15em] whitespace-nowrap transition-all outline-none select-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center cursor-pointer rounded-pill border border-transparent bg-clip-padding font-body font-semibold text-[15px] sm:text-[16px] leading-[20px] tracking-normal whitespace-nowrap transition-all outline-none select-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -22,8 +22,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-11 gap-sm px-lg",
-        sm: "h-9 gap-xs px-md text-[10px]",
-        lg: "h-14 gap-sm px-xl",
+        sm: "h-9 gap-xs px-md text-[13px]",
+        lg: "h-14 gap-sm px-xl text-[16px]",
         icon: "size-11",
         "icon-sm": "size-9"
       }

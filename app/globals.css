@@ -3,13 +3,174 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --font-avenir: Avenir, "Avenir Next", var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
   body {
     @apply bg-black text-white font-body;
     -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
   }
 
-  h1, h2, h3, .display {
-    @apply font-display uppercase tracking-wide;
+  /* Tix.africa Exact Typography Scale */
+  h1 {
+    font-family: var(--font-avenir);
+    font-size: 30px;
+    line-height: 38px;
+    font-weight: 900;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 38px;
+      line-height: 45px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    h1 {
+      font-size: 60px;
+      line-height: 72px;
+    }
+  }
+
+  h2 {
+    font-family: var(--font-avenir);
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    h2 {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    h2 {
+      font-size: 48px;
+      line-height: 62px;
+    }
+  }
+
+  h3 {
+    font-family: var(--font-avenir);
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    h3 {
+      font-size: 30px;
+      line-height: 38px;
+    }
+  }
+
+  h4 {
+    font-family: var(--font-avenir);
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+  }
+
+  @media (min-width: 992px) {
+    h4 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+
+  h5 {
+    font-family: var(--font-avenir);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+
+  @media (min-width: 768px) {
+    h5 {
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    h5 {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  h6 {
+    font-family: var(--font-avenir);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .lead, p.lead {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  @media (min-width: 768px) {
+    .lead, p.lead {
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .lead, p.lead {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  /* Decorative accent font (Comforter) */
+  .comforter-accent, .font-comforter {
+    font-family: var(--font-comforter), cursive;
+    font-weight: 400;
+  }
+
+  h1 span.comforter-accent {
+    font-size: 32px;
+    line-height: 28px;
+  }
+
+  @media (min-width: 768px) {
+    h1 span.comforter-accent {
+      font-size: 40px;
+      line-height: 32px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    h1 span.comforter-accent {
+      font-size: 62px;
+      line-height: 62px;
+    }
   }
 
   ::selection {
@@ -20,11 +181,11 @@
 
 @layer utilities {
   .card-title {
-    letter-spacing: 0.01em;
+    letter-spacing: -0.01em;
   }
 
   .meta-mono {
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
   }
 }
 

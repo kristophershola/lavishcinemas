@@ -16,7 +16,7 @@ export function LavishLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
         y="27"
         textAnchor="middle"
         fill="var(--black)"
-        fontFamily="var(--font-bebas), sans-serif"
+        fontFamily="Avenir, 'Avenir Next', var(--font-inter), sans-serif"
         fontSize="22"
         fontWeight="700"
         letterSpacing="0.05em"

@@ -41,7 +41,7 @@ export default function SiteNav() {
       >
         <Link
           href="/"
-          className="font-display text-[24px] tracking-[0.12em] text-white transition sm:text-[30px]"
+          className="font-display font-black text-[22px] tracking-[-0.02em] text-white transition sm:text-[26px]"
         >
           LAVISH CINEMAS
         </Link>
@@ -51,7 +51,7 @@ export default function SiteNav() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted transition hover:text-gold"
+              className="font-body text-[15px] font-medium text-muted transition hover:text-white"
             >
               {link.label}
             </Link>

@@ -27,21 +27,21 @@ const STEPS = [
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="mx-auto max-w-7xl px-page pb-hero scroll-mt-[160px]">
-      <h2 className="font-display text-[56px] tracking-[0.06em] text-white underline decoration-gold decoration-[3px] underline-offset-[12px]">
+      <h2 className="font-display text-[24px] leading-[32px] sm:text-[32px] sm:leading-[40px] lg:text-[48px] lg:leading-[62px] font-bold tracking-[-0.01em] text-white underline decoration-gold decoration-[3px] underline-offset-[12px]">
         How It Works
       </h2>
-      <p className="mt-lg max-w-lg font-body text-[14px] font-light text-muted">
+      <p className="mt-lg max-w-lg font-body text-[16px] leading-[24px] text-muted">
         Four steps, start to finish, from picking your night to walking into your own hall.
       </p>
 
       <div className="mt-xl grid gap-xl sm:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((step) => (
           <div key={step.number} className="rounded border border-border bg-surface p-lg">
-            <span className="font-display text-[32px] text-gold/60">{step.number}</span>
-            <h3 className="mt-md card-title font-body text-[14px] font-medium uppercase text-white">
+            <span className="font-display text-[28px] sm:text-[32px] font-bold text-gold/60">{step.number}</span>
+            <h3 className="mt-md font-display text-[18px] sm:text-[20px] font-semibold text-white tracking-normal">
               {step.title}
             </h3>
-            <p className="mt-sm font-body text-[13px] font-light text-muted">
+            <p className="mt-sm font-body text-[14px] leading-[20px] text-muted">
               {step.description}
             </p>
           </div>

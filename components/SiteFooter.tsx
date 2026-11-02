@@ -270,7 +270,7 @@ export default function SiteFooter() {
                 lengthAdjust="spacingAndGlyphs"
                 fontSize="175"
                 fontWeight="700"
-                fontFamily="var(--font-bebas), system-ui, sans-serif"
+                fontFamily="Avenir, 'Avenir Next', var(--font-inter), sans-serif"
                 letterSpacing="-0.025em"
                 fill="url(#wm-gradient)"
               >

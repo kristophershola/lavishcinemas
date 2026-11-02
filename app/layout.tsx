@@ -1,24 +1,19 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, DM_Sans, DM_Mono } from "next/font/google";
+import { Inter, Comforter } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
 
-const bebas = Bebas_Neue({
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
+
+const comforter = Comforter({
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-bebas"
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dmsans"
-});
-
-const dmMono = DM_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-dmmono"
+  variable: "--font-comforter",
+  display: "swap"
 });
 
 export const metadata: Metadata = {
@@ -33,8 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${bebas.variable} ${dmSans.variable} ${dmMono.variable}`}>
-      <body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${comforter.variable}`}
+    >
+      <body className="antialiased">
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
