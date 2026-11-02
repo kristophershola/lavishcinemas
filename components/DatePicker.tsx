@@ -116,7 +116,7 @@ export default function DatePicker({
 
       {/* Dropdown calendar */}
       {open && (
-        <div className="absolute top-full left-0 z-50 mt-2 w-[280px] overflow-hidden rounded-2xl border border-border bg-[#161616] p-3 shadow-lg">
+        <div className="absolute top-full left-0 z-50 mt-2 w-[280px] overflow-hidden rounded-2xl border border-border bg-[#1b1b1b] p-3 shadow-lg">
           {/* Month/Year nav */}
           <div className="flex items-center justify-between px-1 pb-2">
             <button

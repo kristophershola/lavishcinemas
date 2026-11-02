@@ -86,7 +86,7 @@ const socialLinks = [
 
 export default function SiteFooter() {
   return (
-    <footer className="relative w-full overflow-hidden border-t border-border bg-[#080808] font-body antialiased selection:bg-gold/30 selection:text-white">
+    <footer className="relative w-full overflow-hidden border-t border-border bg-[#161616] font-body antialiased selection:bg-gold/30 selection:text-white">
       {/* Hero image with gradient overlay */}
       <div className="relative w-full">
         <img
@@ -100,7 +100,7 @@ export default function SiteFooter() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, transparent 40%, rgba(8,8,8,0.6) 70%, #080808 100%)",
+              "linear-gradient(to bottom, transparent 40%, rgba(22,22,22,0.6) 70%, #161616 100%)",
           }}
         />
 

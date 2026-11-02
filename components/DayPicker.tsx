@@ -37,7 +37,7 @@ export default function DayPicker({
             className={`day-card flex shrink-0 flex-col items-center justify-center rounded-[8px] border transition-all duration-300 ${
               isSelected
                 ? "border-gold bg-gold-dim"
-                : "border-surface bg-surface hover:border-gold/40"
+                : "border-border bg-surface hover:border-gold/40"
             }`}
             style={{
               height: "5.75rem",

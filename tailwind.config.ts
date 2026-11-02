@@ -8,9 +8,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        black: "#080808",
-        deep: "#0f0f0f",
-        surface: "#161616",
+        black: "#161616",
+        background: "#161616",
+        deep: "#1b1b1b",
+        surface: "#1b1b1b",
+        card: "#1b1b1b",
         gold: "#c9a84c",
         "gold-dim": "rgba(201,168,76,0.15)",
         white: "#f5f0e8",
